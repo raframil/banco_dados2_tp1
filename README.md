@@ -1,4 +1,4 @@
-# banco_dados2_tp1
+# Trabalho Prático 1 de COM231
 
 Trabalho prático de Banco de Dados 2 (COM231) do curso de Ciência da Computação da UNIFEI.
 
