@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Sep 11, 2019 5:56:11 PM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="controller.Employees" table="employees" catalog="employees" optimistic-lock="version">
+        <id name="empNo" type="int">
+            <column name="emp_no" />
+            <generator class="assigned" />
+        </id>
+        <property name="birthDate" type="date">
+            <column name="birth_date" length="10" not-null="true" />
+        </property>
+        <property name="firstName" type="string">
+            <column name="first_name" length="14" not-null="true" />
+        </property>
+        <property name="lastName" type="string">
+            <column name="last_name" length="16" not-null="true" />
+        </property>
+        <property name="gender" type="string">
+            <column name="gender" length="2" not-null="true" />
+        </property>
+        <property name="hireDate" type="date">
+            <column name="hire_date" length="10" not-null="true" />
+        </property>
+        <set name="titleses" table="titles" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="emp_no" not-null="true" />
+            </key>
+            <one-to-many class="controller.Titles" />
+        </set>
+        <set name="salarieses" table="salaries" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="emp_no" not-null="true" />
+            </key>
+            <one-to-many class="controller.Salaries" />
+        </set>
+        <set name="deptEmps" table="dept_emp" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="emp_no" not-null="true" />
+            </key>
+            <one-to-many class="controller.DeptEmp" />
+        </set>
+        <set name="deptManagers" table="dept_manager" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="emp_no" not-null="true" />
+            </key>
+            <one-to-many class="controller.DeptManager" />
+        </set>
+    </class>
+</hibernate-mapping>
