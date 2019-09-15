@@ -5,11 +5,15 @@
  */
 package view;
 
+import controller.DeptController;
+
 /**
  *
  * @author Rafael
  */
 public class TelaPrincipal extends javax.swing.JFrame {
+    
+    private DeptController deptCtrl = new DeptController();
 
     /**
      * Creates new form TelaPrincipal
@@ -143,7 +147,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        StoreEmployeeView view = new StoreEmployeeView();
+        StoreEmployeeView view = new StoreEmployeeView(this.deptCtrl);
         jDesktopPane.add(view);
         view.setVisible(true);
     }//GEN-LAST:event_jMenuItem1ActionPerformed

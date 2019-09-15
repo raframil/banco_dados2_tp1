@@ -5,17 +5,29 @@
  */
 package view;
 
+import controller.DeptController;
+import controller.HibernateUtil;
+import java.util.List;
+import model.Departments;
+import org.hibernate.Query;
+import org.hibernate.Session;
+
 /**
  *
  * @author Rafael
  */
 public class StoreEmployeeView extends javax.swing.JInternalFrame {
+    
+    private DeptController deptCtrl;
+    private List<Departments> departments;
 
     /**
      * Creates new form teste
      */
-    public StoreEmployeeView() {
+    public StoreEmployeeView(DeptController dptCtrl) {
+        this.deptCtrl = deptCtrl;
         initComponents();
+        addDepartmentsToJComboBox();
     }
 
     /**
@@ -60,6 +72,8 @@ public class StoreEmployeeView extends javax.swing.JInternalFrame {
         titleSalaryFromDateField = new javax.swing.JFormattedTextField();
         jLabel13 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
+        jLabel14 = new javax.swing.JLabel();
+        empNoField = new javax.swing.JTextField();
 
         setClosable(true);
         setTitle("New Employee");
@@ -162,6 +176,11 @@ public class StoreEmployeeView extends javax.swing.JInternalFrame {
         jLabel7.setText("Department");
 
         jComboBoxDepartment.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBoxDepartment.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBoxDepartmentActionPerformed(evt);
+            }
+        });
 
         jLabel8.setText("From Date");
 
@@ -249,6 +268,8 @@ public class StoreEmployeeView extends javax.swing.JInternalFrame {
 
         jLabel12.setText("From Date");
 
+        jLabel14.setText("Employee No");
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
@@ -266,21 +287,29 @@ public class StoreEmployeeView extends javax.swing.JInternalFrame {
                     .addComponent(salaryField, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel13)
                     .addComponent(titleSalaryToDateField, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel14)
+                    .addComponent(empNoField, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addContainerGap(32, Short.MAX_VALUE)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap(36, Short.MAX_VALUE)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
                         .addComponent(jLabel11)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(salaryField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel4Layout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
                         .addComponent(jLabel10)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(titleNameField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(titleNameField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                        .addComponent(jLabel14)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(empNoField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel13)
@@ -362,12 +391,21 @@ public class StoreEmployeeView extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_titleSalaryToDateFieldActionPerformed
 
+    private void jComboBoxDepartmentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxDepartmentActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBoxDepartmentActionPerformed
+
+    public void addDepartmentsToJComboBox() {
+        this.departments = this.deptCtrl.listAllDepartments();
+        System.out.println(this.departments);
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel Title;
     private javax.swing.JFormattedTextField birthField;
     private javax.swing.JFormattedTextField departmentFromDateField;
     private javax.swing.JFormattedTextField departmentToDateField;
+    private javax.swing.JTextField empNoField;
     private javax.swing.JRadioButton femaleRadio;
     private javax.swing.JTextField firstNameField;
     private javax.swing.JFormattedTextField hireField;
@@ -376,6 +414,7 @@ public class StoreEmployeeView extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
