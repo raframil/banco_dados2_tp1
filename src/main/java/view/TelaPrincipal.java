@@ -147,7 +147,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        StoreEmployeeView view = new StoreEmployeeView(this.deptCtrl);
+        StoreEmployeeView view = new StoreEmployeeView();
         jDesktopPane.add(view);
         view.setVisible(true);
     }//GEN-LAST:event_jMenuItem1ActionPerformed

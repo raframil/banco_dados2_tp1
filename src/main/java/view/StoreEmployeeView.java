@@ -5,7 +5,7 @@
  */
 package view;
 
-import controller.DeptController;
+import model.GeneralDAO;
 import controller.HibernateUtil;
 import java.util.List;
 import model.Departments;
@@ -18,14 +18,13 @@ import org.hibernate.Session;
  */
 public class StoreEmployeeView extends javax.swing.JInternalFrame {
     
-    private DeptController deptCtrl;
+    private GeneralDAO grl = new GeneralDAO();
     private List<Departments> departments;
 
     /**
      * Creates new form teste
      */
-    public StoreEmployeeView(DeptController dptCtrl) {
-        this.deptCtrl = deptCtrl;
+    public StoreEmployeeView() {
         initComponents();
         addDepartmentsToJComboBox();
     }
@@ -396,8 +395,10 @@ public class StoreEmployeeView extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jComboBoxDepartmentActionPerformed
 
     public void addDepartmentsToJComboBox() {
-        this.departments = this.deptCtrl.listAllDepartments();
-        System.out.println(this.departments);
+//        grl.listaTodos();
+//        System.out.println(this.departments);
+//        grl.fecharSessao();
+        
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
