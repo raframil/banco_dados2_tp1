@@ -1,6 +1,7 @@
+C:\Users\Rafael\Documents\NetBeansProjects\banco_dados2_tp1\src\main\java\controller\GeneralDAO.java
 C:\Users\Rafael\Documents\NetBeansProjects\banco_dados2_tp1\src\main\java\model\DeptEmp.java
 C:\Users\Rafael\Documents\NetBeansProjects\banco_dados2_tp1\src\main\java\model\DeptManagerId.java
-C:\Users\Rafael\Documents\NetBeansProjects\banco_dados2_tp1\src\main\java\model\GeneralDAO.java
+C:\Users\Rafael\Documents\NetBeansProjects\banco_dados2_tp1\src\main\java\controller\DAOExtends.java
 C:\Users\Rafael\Documents\NetBeansProjects\banco_dados2_tp1\src\main\java\controller\DeptController.java
 C:\Users\Rafael\Documents\NetBeansProjects\banco_dados2_tp1\src\main\java\view\StoreEmployeeView.java
 C:\Users\Rafael\Documents\NetBeansProjects\banco_dados2_tp1\src\main\java\model\Departments.java
@@ -11,7 +12,6 @@ C:\Users\Rafael\Documents\NetBeansProjects\banco_dados2_tp1\src\main\java\view\E
 C:\Users\Rafael\Documents\NetBeansProjects\banco_dados2_tp1\src\main\java\view\DeleteEmployeeView.java
 C:\Users\Rafael\Documents\NetBeansProjects\banco_dados2_tp1\src\main\java\model\DeptManager.java
 C:\Users\Rafael\Documents\NetBeansProjects\banco_dados2_tp1\src\main\java\model\Titles.java
-C:\Users\Rafael\Documents\NetBeansProjects\banco_dados2_tp1\src\main\java\model\DAOExtends.java
 C:\Users\Rafael\Documents\NetBeansProjects\banco_dados2_tp1\src\main\java\model\Salaries.java
 C:\Users\Rafael\Documents\NetBeansProjects\banco_dados2_tp1\src\main\java\controller\EmployeeController.java
 C:\Users\Rafael\Documents\NetBeansProjects\banco_dados2_tp1\src\main\java\model\TitlesId.java

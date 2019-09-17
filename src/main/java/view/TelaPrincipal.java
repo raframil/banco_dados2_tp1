@@ -6,6 +6,8 @@
 package view;
 
 import controller.DeptController;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -159,9 +161,14 @@ public class TelaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
-        DeleteEmployeeView view = new DeleteEmployeeView();
-        jDesktopPane.add(view);
-        view.setVisible(true);
+        DeleteEmployeeView view;
+        try {
+            view = new DeleteEmployeeView();
+            jDesktopPane.add(view);
+            view.setVisible(true);
+        } catch (Exception ex) {
+            Logger.getLogger(TelaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     /**

@@ -59,9 +59,11 @@ public class Departments  implements java.io.Serializable {
     public void setDeptManagers(Set deptManagers) {
         this.deptManagers = deptManagers;
     }
-
-
-
+    
+    @Override
+    public String toString() {
+        return this.getDeptName();
+    }
 
 }
 

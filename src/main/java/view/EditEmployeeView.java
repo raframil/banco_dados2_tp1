@@ -389,8 +389,7 @@ public class EditEmployeeView extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void submitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitButtonActionPerformed
-        // TODO add your handling code here:
-        ArrayList<ArrayList<String>> inputsDigitados =new ArrayList<>();
+        ArrayList<ArrayList<String>> inputsDigitados = new ArrayList<>();
         EmployeeController control = new EmployeeController();
         
         if(!birthField.getText().isEmpty()){
@@ -487,12 +486,12 @@ public class EditEmployeeView extends javax.swing.JInternalFrame {
         if(femaleRadio.isSelected()){
             ArrayList<String> array=new ArrayList<>();
             array.add("sex");
-            array.add(femaleRadio.getText());
+            array.add("F");
             inputsDigitados.add(array);
-        }else{
+        } else{
             ArrayList<String> array=new ArrayList<>();
             array.add("sex");
-            array.add(maleRadio.getText());
+            array.add("M");
             inputsDigitados.add(array);
         }
         

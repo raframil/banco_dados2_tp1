@@ -1,4 +1,4 @@
-package model;
+package controller;
 
 
 import java.io.Serializable;
@@ -48,8 +48,12 @@ public class GeneralDAO {
     public void fecharSessao() {
         sessao.close();
     }
-
-    public ArrayList<Object> listaEmployee(int empno) {
+    
+    public ArrayList<?> listAll(String table) {
+        return (ArrayList<?>) sessao.createQuery("from " + table).list();
+    }
+    
+    public ArrayList<Object> listEmployee(int empno) {
         return (ArrayList<Object>) sessao.createQuery("SELECT * FROM Employees WHERE empno = "+empno).list();
     }
 }

@@ -5,17 +5,42 @@
  */
 package view;
 
+import controller.EmployeeController;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import model.Employees;
+
 /**
  *
  * @author Rafael
  */
 public class DeleteEmployeeView extends javax.swing.JInternalFrame {
 
+    private EmployeeController emplCtrl = new EmployeeController();
+
     /**
      * Creates new form DeleteEmployeeView
      */
-    public DeleteEmployeeView() {
+    public DeleteEmployeeView() throws Exception {
         initComponents();
+        addRowToJTable();
+    }
+
+    public void addRowToJTable() throws Exception {
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        ArrayList<Employees> employeesList = emplCtrl.listAllEmployees();
+        Object rowData[] = new Object[7];
+        for (int i = 0; i < employeesList.size(); i++) {
+            rowData[0] = employeesList.get(i).getEmpNo();
+            rowData[1] = employeesList.get(i).getFirstName();
+            rowData[2] = employeesList.get(i).getLastName();
+            rowData[3] = employeesList.get(i).getGender();
+            rowData[4] = employeesList.get(i).getHireDate();
+            model.addRow(rowData);
+        }
     }
 
     /**
@@ -38,10 +63,7 @@ public class DeleteEmployeeView extends javax.swing.JInternalFrame {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+
             },
             new String [] {
                 "ID", "First Name", "Last Name", "Gender", "Hire Date"
@@ -67,6 +89,11 @@ public class DeleteEmployeeView extends javax.swing.JInternalFrame {
 
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/user_delete.png"))); // NOI18N
         jButton1.setText("Delete");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -100,8 +127,38 @@ public class DeleteEmployeeView extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void deleteIDFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteIDFieldActionPerformed
-        // TODO add your handling code here:
+
     }//GEN-LAST:event_deleteIDFieldActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        int deleteId = Integer.parseInt(deleteIDField.getText());
+
+        boolean flag = false;
+        for (int i = 0; i < model.getRowCount(); i++) {
+            if ((model.getValueAt(i, 0)).equals(deleteId)) {
+                flag = true;
+            }
+        }
+        if (flag == false) {
+            JOptionPane.showMessageDialog(null, "Employee " + deleteId + " does not exist! Type another id...");
+        } else {
+            int dialogButton = JOptionPane.YES_NO_OPTION;
+            int dialogResult = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete employee " + deleteId, "Confirm Delete", dialogButton);
+            if (dialogResult == 0) {
+                emplCtrl.deleteEmployee(deleteId);
+                JOptionPane.showMessageDialog(null, "Employee " + deleteId + " Removed!");
+                // remove o registro da tabela na view
+                for (int i = 0; i < model.getRowCount(); i++) {
+                    if ((model.getValueAt(i, 0)).equals(deleteId)) {
+                        model.removeRow(i);
+                    }
+                }
+            } else {
+                System.out.println("No Option");
+            }
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -111,4 +168,5 @@ public class DeleteEmployeeView extends javax.swing.JInternalFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
+
 }

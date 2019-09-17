@@ -5,9 +5,14 @@
  */
 package view;
 
-import model.GeneralDAO;
+import controller.EmployeeController;
+import controller.GeneralDAO;
 import controller.HibernateUtil;
+import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import model.Departments;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -17,16 +22,16 @@ import org.hibernate.Session;
  * @author Rafael
  */
 public class StoreEmployeeView extends javax.swing.JInternalFrame {
-    
+
     private GeneralDAO grl = new GeneralDAO();
-    private List<Departments> departments;
+    private ArrayList<Departments> departments;
 
     /**
      * Creates new form teste
      */
     public StoreEmployeeView() {
         initComponents();
-        addDepartmentsToJComboBox();
+        getDepartments();
     }
 
     /**
@@ -174,7 +179,6 @@ public class StoreEmployeeView extends javax.swing.JInternalFrame {
 
         jLabel7.setText("Department");
 
-        jComboBoxDepartment.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         jComboBoxDepartment.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jComboBoxDepartmentActionPerformed(evt);
@@ -379,7 +383,133 @@ public class StoreEmployeeView extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void submitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitButtonActionPerformed
-        // TODO add your handling code here:
+        ArrayList<ArrayList<String>> inputsDigitados = new ArrayList<>();
+        EmployeeController control = new EmployeeController();
+
+        if (!birthField.getText().isEmpty()) {
+            ArrayList<String> array = new ArrayList<>();
+            array.add("birth_date");
+            array.add(birthField.getText());
+            inputsDigitados.add(array);
+        }
+
+        if (!departmentFromDateField.getText().isEmpty()) {
+            ArrayList<String> array = new ArrayList<>();
+            array.add("from_date");
+            array.add(departmentFromDateField.getText());
+            inputsDigitados.add(array);
+        }
+
+        if (!departmentToDateField.getText().isEmpty()) {
+            ArrayList<String> array = new ArrayList<>();
+            array.add("to_date");
+            array.add(departmentToDateField.getText());
+            inputsDigitados.add(array);
+        }
+
+        if (!firstNameField.getText().isEmpty()) {
+            ArrayList<String> array = new ArrayList<>();
+            array.add("first_name");
+            array.add(firstNameField.getText());
+            inputsDigitados.add(array);
+        }
+
+        if (!hireField.getText().isEmpty()) {
+            ArrayList<String> array = new ArrayList<>();
+            array.add("hire_date");
+            array.add(hireField.getText());
+            inputsDigitados.add(array);
+        }
+
+        if (!jComboBoxDepartment.getSelectedItem().equals("")) {
+            ArrayList<String> array = new ArrayList<>();
+            array.add("jComboBoxDepartment");
+            array.add(jComboBoxDepartment.getSelectedItem().toString());
+            inputsDigitados.add(array);
+        }
+
+        if (!departmentToDateField.getText().isEmpty()) {
+            ArrayList<String> array = new ArrayList<>();
+            array.add("departmentToDateField");
+            array.add(departmentToDateField.getText());
+            inputsDigitados.add(array);
+        }
+
+        if (!departmentFromDateField.getText().isEmpty()) {
+            ArrayList<String> array = new ArrayList<>();
+            array.add("departmentFromDateField");
+            array.add(departmentFromDateField.getText());
+            inputsDigitados.add(array);
+        }
+
+        if (!empNoField.getText().isEmpty()) {
+            ArrayList<String> array = new ArrayList<>();
+            array.add("emp_no");
+            array.add(empNoField.getText());
+            inputsDigitados.add(array);
+        }
+
+        if (!lastNameField.getText().isEmpty()) {
+            ArrayList<String> array = new ArrayList<>();
+            array.add("last_name");
+            array.add(lastNameField.getText());
+            inputsDigitados.add(array);
+        }
+
+        if (!salaryField.getText().isEmpty()) {
+            ArrayList<String> array = new ArrayList<>();
+            array.add("salaryField");
+            array.add(salaryField.getText());
+            inputsDigitados.add(array);
+        }
+
+        if (!titleNameField.getText().isEmpty()) {
+            ArrayList<String> array = new ArrayList<>();
+            array.add("title");
+            array.add(titleNameField.getText());
+            inputsDigitados.add(array);
+        }
+
+        if (!titleSalaryFromDateField.getText().isEmpty()) {
+            ArrayList<String> array = new ArrayList<>();
+            array.add("titleSalaryFromDateField");
+            array.add(titleSalaryFromDateField.getText());
+            inputsDigitados.add(array);
+        }
+
+        if (!titleSalaryToDateField.getText().isEmpty()) {
+            ArrayList<String> array = new ArrayList<>();
+            array.add("titleSalaryToDateField");
+            array.add(titleSalaryToDateField.getText());
+            inputsDigitados.add(array);
+        }
+
+        if (femaleRadio.isSelected()) {
+            ArrayList<String> array = new ArrayList<>();
+            array.add("sex");
+            array.add("F");
+            inputsDigitados.add(array);
+        } else {
+            ArrayList<String> array = new ArrayList<>();
+            array.add("sex");
+            array.add("M");
+            inputsDigitados.add(array);
+        }
+
+        if (jComboBoxDepartment.getItemCount() != 0) {
+            Departments selectedDepartment = (Departments) jComboBoxDepartment.getSelectedItem();
+            String dpt_no = selectedDepartment.getDeptNo();
+            ArrayList<String> array = new ArrayList<>();
+            array.add("dept_no");
+            array.add(dpt_no);
+            inputsDigitados.add(array);
+        }
+
+        try {
+            control.createEmployee(Integer.parseInt(empNoField.getText()), inputsDigitados);
+        } catch (Exception ex) {
+            Logger.getLogger(StoreEmployeeView.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_submitButtonActionPerformed
 
     private void maleRadioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_maleRadioActionPerformed
@@ -394,11 +524,19 @@ public class StoreEmployeeView extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jComboBoxDepartmentActionPerformed
 
+    public void getDepartments() {
+        this.departments = (ArrayList<Departments>) grl.listAll("Departments");
+        grl.fecharSessao();
+        addDepartmentsToJComboBox();
+    }
+
     public void addDepartmentsToJComboBox() {
-//        grl.listaTodos();
-//        System.out.println(this.departments);
-//        grl.fecharSessao();
-        
+        if (departments.isEmpty()) {
+            jComboBoxDepartment.addItem("No deparments");
+        }
+        for (Departments departments : departments) {
+            jComboBoxDepartment.addItem(departments);
+        }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -410,7 +548,7 @@ public class StoreEmployeeView extends javax.swing.JInternalFrame {
     private javax.swing.JRadioButton femaleRadio;
     private javax.swing.JTextField firstNameField;
     private javax.swing.JFormattedTextField hireField;
-    private javax.swing.JComboBox<String> jComboBoxDepartment;
+    private javax.swing.JComboBox<Object> jComboBoxDepartment;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;

@@ -16,3 +16,4 @@ public class DeptController {
         return departmentsList;
     }
 }
+
