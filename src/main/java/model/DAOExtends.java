@@ -1,6 +1,4 @@
-package model;
-
-//package controller;
+//package model;
 //
 //import Hibernate.Livro;
 //import java.util.Iterator;
@@ -9,7 +7,8 @@ package model;
 // *
 // * @author greca
 // */
-//public class LivroDAO extends GeneralDAO{
+//
+//public class DAOExtends extends GeneralDAO{
 //    public Livro getLivroByIsbn(String isbn) {
 //        Iterator i = sessao.createQuery("from Livro where isbn='"+isbn+"'").list().iterator();
 //        Livro l = null;

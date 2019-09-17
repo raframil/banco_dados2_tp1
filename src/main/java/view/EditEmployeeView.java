@@ -4,6 +4,11 @@
  * and open the template in the editor.
  */
 package view;
+import java.util.*;
+import controller.EmployeeController;
+import java.text.ParseException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -48,7 +53,7 @@ public class EditEmployeeView extends javax.swing.JInternalFrame {
         jLabel5 = new javax.swing.JLabel();
         hireField = new javax.swing.JFormattedTextField();
         jLabel7 = new javax.swing.JLabel();
-        jComboBoxDepartment = new javax.swing.JComboBox<>();
+        jComboBoxDepartment = new javax.swing.JComboBox<String>();
         jLabel8 = new javax.swing.JLabel();
         departmentFromDateField = new javax.swing.JFormattedTextField();
         jLabel9 = new javax.swing.JLabel();
@@ -172,7 +177,7 @@ public class EditEmployeeView extends javax.swing.JInternalFrame {
 
         jLabel7.setText("Department");
 
-        jComboBoxDepartment.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBoxDepartment.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         jLabel8.setText("From Date");
 
@@ -297,9 +302,9 @@ public class EditEmployeeView extends javax.swing.JInternalFrame {
                     .addComponent(jLabel13)
                     .addComponent(jLabel12))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(titleSalaryFromDateField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(titleSalaryToDateField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(titleSalaryToDateField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(titleSalaryFromDateField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -385,6 +390,117 @@ public class EditEmployeeView extends javax.swing.JInternalFrame {
 
     private void submitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitButtonActionPerformed
         // TODO add your handling code here:
+        ArrayList<ArrayList<String>> inputsDigitados =new ArrayList<>();
+        EmployeeController control = new EmployeeController();
+        
+        if(!birthField.getText().isEmpty()){
+            ArrayList<String> array=new ArrayList<>();
+            array.add("birth_date");
+            array.add(birthField.getText());
+            inputsDigitados.add(array);
+        }
+        
+        if(!departmentFromDateField.getText().isEmpty()){
+            ArrayList<String> array=new ArrayList<>();
+            array.add("from_date");
+            array.add(departmentFromDateField.getText());
+            inputsDigitados.add(array);
+        }
+        
+        if(!departmentToDateField.getText().isEmpty()){
+            ArrayList<String> array=new ArrayList<>();
+            array.add("to_date");
+            array.add(departmentToDateField.getText());
+            inputsDigitados.add(array);
+        }
+        
+        if(!firstNameField.getText().isEmpty()){
+            ArrayList<String> array=new ArrayList<>();
+            array.add("first_name");
+            array.add(firstNameField.getText());
+            inputsDigitados.add(array);
+        }
+        
+        if(!hireField.getText().isEmpty()){
+            ArrayList<String> array=new ArrayList<>();
+            array.add("hire_date");
+            array.add(hireField.getText());
+            inputsDigitados.add(array);
+        }
+        
+        if(!jComboBoxDepartment.getSelectedItem().equals("")){
+            ArrayList<String> array=new ArrayList<>();
+            array.add("jComboBoxDepartment");
+            array.add(jComboBoxDepartment.getSelectedItem().toString());
+            inputsDigitados.add(array);
+        }
+        
+        if(!departmentToDateField.getText().isEmpty()){
+            ArrayList<String> array=new ArrayList<>();
+            array.add("departmentToDateField");
+            array.add(departmentToDateField.getText());
+            inputsDigitados.add(array);
+        }
+        
+        if(!jTextField1.getText().isEmpty()){
+            ArrayList<String> array=new ArrayList<>();
+            array.add("emp_no");
+            array.add(jTextField1.getText());
+            inputsDigitados.add(array);
+        }
+        
+        if(!lastNameField.getText().isEmpty()){
+            ArrayList<String> array=new ArrayList<>();
+            array.add("last_name");
+            array.add(lastNameField.getText());
+            inputsDigitados.add(array);
+        }
+        
+        if(!salaryField.getText().isEmpty()){
+            ArrayList<String> array=new ArrayList<>();
+            array.add("salaryField");
+            array.add(salaryField.getText());
+            inputsDigitados.add(array);
+        }
+        
+        if(!titleNameField.getText().isEmpty()){
+            ArrayList<String> array=new ArrayList<>();
+            array.add("tile");
+            array.add(titleNameField.getText());
+            inputsDigitados.add(array);
+        }
+        
+        if(!titleSalaryFromDateField.getText().isEmpty()){
+            ArrayList<String> array=new ArrayList<>();
+            array.add("titleSalaryFromDateField");
+            array.add(titleSalaryFromDateField.getText());
+            inputsDigitados.add(array);
+        }
+        
+        if(!titleSalaryToDateField.getText().isEmpty()){
+            ArrayList<String> array=new ArrayList<>();
+            array.add("titleSalaryToDateField");
+            array.add(titleSalaryToDateField.getText());
+            inputsDigitados.add(array);
+        }
+        
+        if(femaleRadio.isSelected()){
+            ArrayList<String> array=new ArrayList<>();
+            array.add("sex");
+            array.add(femaleRadio.getText());
+            inputsDigitados.add(array);
+        }else{
+            ArrayList<String> array=new ArrayList<>();
+            array.add("sex");
+            array.add(maleRadio.getText());
+            inputsDigitados.add(array);
+        }
+        
+        try {
+            control.updateEmployee(Integer.parseInt(jTextField1.getText()),inputsDigitados);
+        } catch (ParseException ex) {
+            Logger.getLogger(EditEmployeeView.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_submitButtonActionPerformed
 
     private void maleRadioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_maleRadioActionPerformed
