@@ -3,6 +3,8 @@ package model;
 
 
 import java.util.Date;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import org.hibernate.annotations.Cascade;
 
 /**
@@ -11,10 +13,11 @@ import org.hibernate.annotations.Cascade;
 public class Titles  implements java.io.Serializable {
 
 
-     private TitlesId id;
-     @Cascade({ org.hibernate.annotations.CascadeType.ALL })
-     private Employees employees;
-     private Date toDate;
+    private TitlesId id;
+    @ManyToOne
+    @JoinColumn(name="emp_no")
+    private Employees employees;
+    private Date toDate;
 
     public Titles() {
     }

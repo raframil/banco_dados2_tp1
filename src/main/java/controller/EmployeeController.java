@@ -22,7 +22,7 @@ public class EmployeeController {
             Salaries sal = new Salaries();
             SalariesId sal_id = new SalariesId();
             DeptEmp deptEmp = new DeptEmp();
-            //Departments dept = new Departments();
+            Departments dept = new Departments();
             DeptEmpId deptEmp_id = new DeptEmpId();
 
             for (int i = 0; i < inputsDigitados.size(); i++) {
@@ -59,9 +59,6 @@ public class EmployeeController {
                     if (nomeInput.equals("title")) {
                         titl_id.setTitle(valorInput);
                     }
-
-                    titl_id.setEmpNo(empNo);
-
                     if (nomeInput.equals("titleSalaryFromDateField")) {
                         Date date = new SimpleDateFormat("dd/MM/yyyy").parse(valorInput);
                         titl_id.setFromDate(date);
@@ -73,7 +70,7 @@ public class EmployeeController {
                     // Fim tabela titles
 
                     // Começo tabela salaries 
-                    sal.setId(sal_id);
+                    
                     if (nomeInput.equals("salaryField")) {
                         sal.setSalary(Integer.parseInt(valorInput));
                     }
@@ -81,7 +78,7 @@ public class EmployeeController {
                         Date date = new SimpleDateFormat("dd/MM/yyyy").parse(valorInput);
                         sal.setToDate(date);
                     }
-                    sal_id.setEmpNo(empNo);
+                    
                     if (nomeInput.equals("titleSalaryFromDateField")) {
                         Date date = new SimpleDateFormat("dd/MM/yyyy").parse(valorInput);
                         sal_id.setFromDate(date);
@@ -104,24 +101,17 @@ public class EmployeeController {
                     // Fim Tabela Departamento-Empregado
                 }
             }
-            
-            
-            
+        
+            sal_id.setEmpNo(empNo);
             sal.setId(sal_id);
-
+            
             deptEmp_id.setEmpNo(empNo); 
             deptEmp.setId(deptEmp_id);
+            
+            titl_id.setEmpNo(empNo);
+            titl.setId(titl_id);
 
             employee.setEmpNo(empNo);
-
-            /*Set<Salaries> sal_set = new HashSet<>();
-            sal_set.add(sal);
-
-            Set<Titles> titl_set = new HashSet<>();
-            titl_set.add(titl);
-
-            Set<DeptEmp> deptemp_set = new HashSet<>();
-            deptemp_set.add(deptEmp);*/
 
             Session session = grl_emp.getSessao();
 
@@ -133,10 +123,8 @@ public class EmployeeController {
             deptEmp.setEmployees(employee);
             
             session.save(deptEmp);
-            //session.save(sal);
-            //session.save(titl);
-            
-            
+            session.save(sal);
+            session.save(titl);
 
             Transaction tr = session.beginTransaction();
 
