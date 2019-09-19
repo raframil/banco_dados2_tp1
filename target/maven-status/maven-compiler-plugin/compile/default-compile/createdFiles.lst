@@ -28,5 +28,6 @@ model\Employees.class
 view\EditEmployeeView$3.class
 view\DeleteEmployeeView$2.class
 view\EditEmployeeView$1.class
+view\DeleteEmployeeView$3.class
 view\DeleteEmployeeView$1.class
 model\DeptManagerId.class

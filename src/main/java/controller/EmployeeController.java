@@ -22,7 +22,7 @@ public class EmployeeController {
             Salaries sal = new Salaries();
             SalariesId sal_id = new SalariesId();
             DeptEmp deptEmp = new DeptEmp();
-            Departments dept = new Departments();
+            //Departments dept = new Departments();
             DeptEmpId deptEmp_id = new DeptEmpId();
 
             for (int i = 0; i < inputsDigitados.size(); i++) {
@@ -56,8 +56,6 @@ public class EmployeeController {
                     // Fim Dados Referentes a tabela de Employees
 
                     // Dados Referentes a tabela de Titles
-                    // coloca isso no for?
-                    titl.setEmployees(employee);
                     if (nomeInput.equals("title")) {
                         titl_id.setTitle(valorInput);
                     }
@@ -91,7 +89,7 @@ public class EmployeeController {
                     // Fim tabela salaries
 
                     // Tabela Departamento-Empregado
-                    deptEmp_id.setEmpNo(empNo);
+                    
                     if (nomeInput.equals("departmentFromDateField")) {
                         Date date = new SimpleDateFormat("dd/MM/yyyy").parse(valorInput);
                         deptEmp.setFromDate(date);
@@ -106,29 +104,39 @@ public class EmployeeController {
                     // Fim Tabela Departamento-Empregado
                 }
             }
-
-            titl.setEmployees(employee);
-
-            sal.setEmployees(employee);
+            
+            
+            
             sal.setId(sal_id);
 
-            deptEmp.setDepartments(dept);
-            deptEmp.setEmployees(employee);
+            deptEmp_id.setEmpNo(empNo); 
             deptEmp.setId(deptEmp_id);
 
             employee.setEmpNo(empNo);
 
-            Set<Salaries> sal_set = new HashSet<>();
+            /*Set<Salaries> sal_set = new HashSet<>();
             sal_set.add(sal);
 
             Set<Titles> titl_set = new HashSet<>();
             titl_set.add(titl);
 
             Set<DeptEmp> deptemp_set = new HashSet<>();
-            deptemp_set.add(deptEmp);
+            deptemp_set.add(deptEmp);*/
 
             Session session = grl_emp.getSessao();
+
             session.save(employee);
+            
+            // Relações com FK
+            titl.setEmployees(employee);
+            sal.setEmployees(employee);
+            deptEmp.setEmployees(employee);
+            
+            session.save(deptEmp);
+            //session.save(sal);
+            //session.save(titl);
+            
+            
 
             Transaction tr = session.beginTransaction();
 
@@ -138,6 +146,10 @@ public class EmployeeController {
             e.printStackTrace();
         }
         grl_emp.fecharSessao();
+    }
+    
+    public void saveDeptEmp(DeptEmp deptEmp) {
+        
     }
 
     public void deleteEmployee(int empNo) {

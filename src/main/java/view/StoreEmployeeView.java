@@ -97,7 +97,11 @@ public class StoreEmployeeView extends javax.swing.JInternalFrame {
 
         jLabel2.setText("First Name");
 
+        firstNameField.setText("Testing");
+
         jLabel3.setText("Last Name");
+
+        lastNameField.setText("Teste");
 
         jLabel4.setText("Birth Date");
 
@@ -106,6 +110,7 @@ public class StoreEmployeeView extends javax.swing.JInternalFrame {
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
+        birthField.setText("03/06/1996");
 
         jLabel6.setText("Gender");
 
@@ -176,6 +181,7 @@ public class StoreEmployeeView extends javax.swing.JInternalFrame {
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
+        hireField.setText("01/02/2002");
 
         jLabel7.setText("Department");
 
@@ -192,6 +198,7 @@ public class StoreEmployeeView extends javax.swing.JInternalFrame {
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
+        departmentFromDateField.setText("01/01/2005");
 
         jLabel9.setText("To Date");
 
@@ -200,6 +207,7 @@ public class StoreEmployeeView extends javax.swing.JInternalFrame {
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
+        departmentToDateField.setText("01/01/2010");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -248,13 +256,18 @@ public class StoreEmployeeView extends javax.swing.JInternalFrame {
 
         jLabel10.setText("Title Name");
 
+        titleNameField.setText("Chief");
+
         jLabel11.setText("Salary");
+
+        salaryField.setText("10500");
 
         try {
             titleSalaryToDateField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
+        titleSalaryToDateField.setText("01/10/2019");
         titleSalaryToDateField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 titleSalaryToDateFieldActionPerformed(evt);
@@ -266,6 +279,7 @@ public class StoreEmployeeView extends javax.swing.JInternalFrame {
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
+        titleSalaryFromDateField.setText("01/09/2011");
 
         jLabel13.setText("To Date");
 

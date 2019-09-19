@@ -11,7 +11,7 @@
         <column length="4" name="dept_no"/>
       </key-property>
     </composite-id>
-    <many-to-one class="model.Departments" fetch="select" insert="false" name="departments" update="false">
+    <many-to-one class="model.Departments" fetch="select"  cascade="all" insert="false" name="departments" update="false">
       <column length="4" name="dept_no" not-null="true"/>
     </many-to-one>
     <many-to-one class="model.Employees" fetch="select" insert="false" name="employees" update="false">
