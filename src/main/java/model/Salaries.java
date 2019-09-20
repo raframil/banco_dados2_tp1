@@ -12,6 +12,7 @@ import org.hibernate.annotations.Cascade;
 public class Salaries implements java.io.Serializable {
 
     private SalariesId id;
+    
     @ManyToOne
     @JoinColumn(name = "emp_no")
     private Employees employees;
