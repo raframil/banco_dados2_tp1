@@ -38,6 +38,7 @@ public class EditEmployeeView extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        buttonGroup1 = new javax.swing.ButtonGroup();
         jLabel1 = new javax.swing.JLabel();
         searchByIdField = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
@@ -115,6 +116,7 @@ public class EditEmployeeView extends javax.swing.JInternalFrame {
 
         jLabel6.setText("Gender");
 
+        buttonGroup1.add(maleRadio);
         maleRadio.setText("Male");
         maleRadio.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -122,6 +124,7 @@ public class EditEmployeeView extends javax.swing.JInternalFrame {
             }
         });
 
+        buttonGroup1.add(femaleRadio);
         femaleRadio.setText("Female");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -409,7 +412,7 @@ public class EditEmployeeView extends javax.swing.JInternalFrame {
                 birthField.setText(formated);
                 
                 String gender = employee.get(0).getGender();
-                if (gender == "M") {
+                if (gender.equals("M")) {
                     maleRadio.setSelected(true);
                 } else {
                     femaleRadio.setSelected(true);
@@ -544,6 +547,7 @@ public class EditEmployeeView extends javax.swing.JInternalFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel Title;
     private javax.swing.JFormattedTextField birthField;
+    private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JFormattedTextField departmentFromDateField;
     private javax.swing.JFormattedTextField departmentToDateField;
     private javax.swing.JRadioButton femaleRadio;
