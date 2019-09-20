@@ -4,17 +4,23 @@
  * and open the template in the editor.
  */
 package view;
+
 import java.util.*;
 import controller.EmployeeController;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import model.Employees;
 
 /**
  *
  * @author Rafael
  */
 public class EditEmployeeView extends javax.swing.JInternalFrame {
+
+    EmployeeController emplCtrl = new EmployeeController();
 
     /**
      * Creates new form EditEmployeeView
@@ -33,7 +39,7 @@ public class EditEmployeeView extends javax.swing.JInternalFrame {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        searchByIdField = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         Title = new javax.swing.JLabel();
@@ -53,7 +59,7 @@ public class EditEmployeeView extends javax.swing.JInternalFrame {
         jLabel5 = new javax.swing.JLabel();
         hireField = new javax.swing.JFormattedTextField();
         jLabel7 = new javax.swing.JLabel();
-        jComboBoxDepartment = new javax.swing.JComboBox<String>();
+        jComboBoxDepartment = new javax.swing.JComboBox<>();
         jLabel8 = new javax.swing.JLabel();
         departmentFromDateField = new javax.swing.JFormattedTextField();
         jLabel9 = new javax.swing.JLabel();
@@ -177,7 +183,7 @@ public class EditEmployeeView extends javax.swing.JInternalFrame {
 
         jLabel7.setText("Department");
 
-        jComboBoxDepartment.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBoxDepartment.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         jLabel8.setText("From Date");
 
@@ -361,7 +367,7 @@ public class EditEmployeeView extends javax.swing.JInternalFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel1)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(searchByIdField, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(0, 0, Short.MAX_VALUE)))
@@ -374,7 +380,7 @@ public class EditEmployeeView extends javax.swing.JInternalFrame {
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(searchByIdField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton1))
                 .addGap(16, 16, 16)
                 .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -385,118 +391,142 @@ public class EditEmployeeView extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+        if (!searchByIdField.getText().isEmpty()) {
+            ArrayList<Employees> employee = new ArrayList();
+            int emp_no = Integer.parseInt(searchByIdField.getText());
+            System.out.println("Searching id = " + emp_no);
+            employee = emplCtrl.readEmployee(emp_no);
+            
+            // verificar se existe a posicao 0 no arraylist
+            // se nao existir, exibir mensagem de que o empregadoo procurado não existe
+            if (employee.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Employee " + emp_no + " not found!");
+            } else {
+                firstNameField.setText(employee.get(0).getFirstName());
+                lastNameField.setText(employee.get(0).getLastName());
+                SimpleDateFormat dataString = new SimpleDateFormat("dd/MM/yyyy");
+                String formated = dataString.format(employee.get(0).getBirthDate());
+                birthField.setText(formated);
+                
+                String gender = employee.get(0).getGender();
+                if (gender == "M") {
+                    maleRadio.setSelected(true);
+                } else {
+                    femaleRadio.setSelected(true);
+                }
+            }
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void submitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitButtonActionPerformed
         ArrayList<ArrayList<String>> inputsDigitados = new ArrayList<>();
         EmployeeController control = new EmployeeController();
-        
-        if(!birthField.getText().isEmpty()){
-            ArrayList<String> array=new ArrayList<>();
+
+        if (!birthField.getText().isEmpty()) {
+            ArrayList<String> array = new ArrayList<>();
             array.add("birth_date");
             array.add(birthField.getText());
             inputsDigitados.add(array);
         }
-        
-        if(!departmentFromDateField.getText().isEmpty()){
-            ArrayList<String> array=new ArrayList<>();
+
+        if (!departmentFromDateField.getText().isEmpty()) {
+            ArrayList<String> array = new ArrayList<>();
             array.add("from_date");
             array.add(departmentFromDateField.getText());
             inputsDigitados.add(array);
         }
-        
-        if(!departmentToDateField.getText().isEmpty()){
-            ArrayList<String> array=new ArrayList<>();
+
+        if (!departmentToDateField.getText().isEmpty()) {
+            ArrayList<String> array = new ArrayList<>();
             array.add("to_date");
             array.add(departmentToDateField.getText());
             inputsDigitados.add(array);
         }
-        
-        if(!firstNameField.getText().isEmpty()){
-            ArrayList<String> array=new ArrayList<>();
+
+        if (!firstNameField.getText().isEmpty()) {
+            ArrayList<String> array = new ArrayList<>();
             array.add("first_name");
             array.add(firstNameField.getText());
             inputsDigitados.add(array);
         }
-        
-        if(!hireField.getText().isEmpty()){
-            ArrayList<String> array=new ArrayList<>();
+
+        if (!hireField.getText().isEmpty()) {
+            ArrayList<String> array = new ArrayList<>();
             array.add("hire_date");
             array.add(hireField.getText());
             inputsDigitados.add(array);
         }
-        
-        if(!jComboBoxDepartment.getSelectedItem().equals("")){
-            ArrayList<String> array=new ArrayList<>();
+
+        if (!jComboBoxDepartment.getSelectedItem().equals("")) {
+            ArrayList<String> array = new ArrayList<>();
             array.add("jComboBoxDepartment");
             array.add(jComboBoxDepartment.getSelectedItem().toString());
             inputsDigitados.add(array);
         }
-        
-        if(!departmentToDateField.getText().isEmpty()){
-            ArrayList<String> array=new ArrayList<>();
+
+        if (!departmentToDateField.getText().isEmpty()) {
+            ArrayList<String> array = new ArrayList<>();
             array.add("departmentToDateField");
             array.add(departmentToDateField.getText());
             inputsDigitados.add(array);
         }
-        
-        if(!jTextField1.getText().isEmpty()){
-            ArrayList<String> array=new ArrayList<>();
+
+        if (!searchByIdField.getText().isEmpty()) {
+            ArrayList<String> array = new ArrayList<>();
             array.add("emp_no");
-            array.add(jTextField1.getText());
+            array.add(searchByIdField.getText());
             inputsDigitados.add(array);
         }
-        
-        if(!lastNameField.getText().isEmpty()){
-            ArrayList<String> array=new ArrayList<>();
+
+        if (!lastNameField.getText().isEmpty()) {
+            ArrayList<String> array = new ArrayList<>();
             array.add("last_name");
             array.add(lastNameField.getText());
             inputsDigitados.add(array);
         }
-        
-        if(!salaryField.getText().isEmpty()){
-            ArrayList<String> array=new ArrayList<>();
+
+        if (!salaryField.getText().isEmpty()) {
+            ArrayList<String> array = new ArrayList<>();
             array.add("salaryField");
             array.add(salaryField.getText());
             inputsDigitados.add(array);
         }
-        
-        if(!titleNameField.getText().isEmpty()){
-            ArrayList<String> array=new ArrayList<>();
+
+        if (!titleNameField.getText().isEmpty()) {
+            ArrayList<String> array = new ArrayList<>();
             array.add("tile");
             array.add(titleNameField.getText());
             inputsDigitados.add(array);
         }
-        
-        if(!titleSalaryFromDateField.getText().isEmpty()){
-            ArrayList<String> array=new ArrayList<>();
+
+        if (!titleSalaryFromDateField.getText().isEmpty()) {
+            ArrayList<String> array = new ArrayList<>();
             array.add("titleSalaryFromDateField");
             array.add(titleSalaryFromDateField.getText());
             inputsDigitados.add(array);
         }
-        
-        if(!titleSalaryToDateField.getText().isEmpty()){
-            ArrayList<String> array=new ArrayList<>();
+
+        if (!titleSalaryToDateField.getText().isEmpty()) {
+            ArrayList<String> array = new ArrayList<>();
             array.add("titleSalaryToDateField");
             array.add(titleSalaryToDateField.getText());
             inputsDigitados.add(array);
         }
-        
-        if(femaleRadio.isSelected()){
-            ArrayList<String> array=new ArrayList<>();
+
+        if (femaleRadio.isSelected()) {
+            ArrayList<String> array = new ArrayList<>();
             array.add("sex");
             array.add("F");
             inputsDigitados.add(array);
-        } else{
-            ArrayList<String> array=new ArrayList<>();
+        } else {
+            ArrayList<String> array = new ArrayList<>();
             array.add("sex");
             array.add("M");
             inputsDigitados.add(array);
         }
-        
+
         try {
-            control.updateEmployee(Integer.parseInt(jTextField1.getText()),inputsDigitados);
+            control.updateEmployee(Integer.parseInt(searchByIdField.getText()), inputsDigitados);
         } catch (ParseException ex) {
             Logger.getLogger(EditEmployeeView.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -539,10 +569,10 @@ public class EditEmployeeView extends javax.swing.JInternalFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField lastNameField;
     private javax.swing.JRadioButton maleRadio;
     private javax.swing.JTextField salaryField;
+    private javax.swing.JTextField searchByIdField;
     private javax.swing.JButton submitButton;
     private javax.swing.JTextField titleNameField;
     private javax.swing.JFormattedTextField titleSalaryFromDateField;

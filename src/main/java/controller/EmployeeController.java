@@ -27,7 +27,6 @@ public class EmployeeController {
 
             for (int i = 0; i < inputsDigitados.size(); i++) {
                 for (int j = 0; j < inputsDigitados.get(i).size() - 1; j++) {
-                    //System.out.print(inputsDigitados.get(i).get(j) + " ");   
                     String nomeInput = inputsDigitados.get(i).get(j).toString();
                     String valorInput = inputsDigitados.get(i).get(j + 1).toString();
 
@@ -70,7 +69,6 @@ public class EmployeeController {
                     // Fim tabela titles
 
                     // Começo tabela salaries 
-                    
                     if (nomeInput.equals("salaryField")) {
                         sal.setSalary(Integer.parseInt(valorInput));
                     }
@@ -78,7 +76,7 @@ public class EmployeeController {
                         Date date = new SimpleDateFormat("dd/MM/yyyy").parse(valorInput);
                         sal.setToDate(date);
                     }
-                    
+
                     if (nomeInput.equals("titleSalaryFromDateField")) {
                         Date date = new SimpleDateFormat("dd/MM/yyyy").parse(valorInput);
                         sal_id.setFromDate(date);
@@ -86,7 +84,6 @@ public class EmployeeController {
                     // Fim tabela salaries
 
                     // Tabela Departamento-Empregado
-                    
                     if (nomeInput.equals("departmentFromDateField")) {
                         Date date = new SimpleDateFormat("dd/MM/yyyy").parse(valorInput);
                         deptEmp.setFromDate(date);
@@ -101,13 +98,13 @@ public class EmployeeController {
                     // Fim Tabela Departamento-Empregado
                 }
             }
-        
+
             sal_id.setEmpNo(empNo);
             sal.setId(sal_id);
-            
-            deptEmp_id.setEmpNo(empNo); 
+
+            deptEmp_id.setEmpNo(empNo);
             deptEmp.setId(deptEmp_id);
-            
+
             titl_id.setEmpNo(empNo);
             titl.setId(titl_id);
 
@@ -116,12 +113,12 @@ public class EmployeeController {
             Session session = grl_emp.getSessao();
 
             session.save(employee);
-            
+
             // Relações com FK
             titl.setEmployees(employee);
             sal.setEmployees(employee);
             deptEmp.setEmployees(employee);
-            
+
             session.save(deptEmp);
             session.save(sal);
             session.save(titl);
@@ -134,10 +131,6 @@ public class EmployeeController {
             e.printStackTrace();
         }
         grl_emp.fecharSessao();
-    }
-    
-    public void saveDeptEmp(DeptEmp deptEmp) {
-        
     }
 
     public void deleteEmployee(int empNo) {
@@ -219,28 +212,17 @@ public class EmployeeController {
         grl_emp.fecharSessao();
     }
 
-    public void readEmployee(int empNo) {
-
+    public ArrayList<Employees> readEmployee(int empNo) {
         GeneralDAO grl_emp = new GeneralDAO();
-
         try {
-
             //consultar
-            Employees employee = new Employees();
-
             Session sessao = grl_emp.getSessao();
-
-            grl_emp.listEmployee(empNo);
-
-            Transaction tr = sessao.beginTransaction();
-
-            tr.commit();
-
-        } catch (HibernateException e) {
+            return grl_emp.listEmployee(empNo);
+        } catch (HibernateException e) {     
             e.printStackTrace();
         }
-
         grl_emp.fecharSessao();
+        return null;
     }
 
     public ArrayList<Employees> listAllEmployees() {

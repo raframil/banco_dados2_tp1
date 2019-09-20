@@ -1,10 +1,10 @@
 package controller;
 
-
 import java.io.Serializable;
 import org.hibernate.*;
 import controller.HibernateUtil;
 import java.util.ArrayList;
+import model.Employees;
 
 /**
  *
@@ -16,9 +16,9 @@ public class GeneralDAO {
 
     public GeneralDAO() {
         sessao = (Session) HibernateUtil.getSessionFactory().openSession();
-        
+
     }
-    
+
     public Session getSessao() {
         return sessao;
     }
@@ -26,7 +26,6 @@ public class GeneralDAO {
     public void setSessao(Session sessao) {
         this.sessao = sessao;
     }
-
 
     public void salvar(Object entidade) {
         sessao.save(entidade);
@@ -48,12 +47,12 @@ public class GeneralDAO {
     public void fecharSessao() {
         sessao.close();
     }
-    
+
     public ArrayList<?> listAll(String table) {
         return (ArrayList<?>) sessao.createQuery("from " + table).list();
     }
-    
-    public ArrayList<Object> listEmployee(int empno) {
-        return (ArrayList<Object>) sessao.createQuery("SELECT * FROM Employees WHERE empno = "+empno).list();
+
+    public ArrayList<Employees> listEmployee(int empno) {
+        return (ArrayList<Employees>) sessao.createQuery("from Employees where emp_no = " + empno).list();
     }
 }
