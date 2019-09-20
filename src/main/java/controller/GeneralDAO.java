@@ -53,6 +53,6 @@ public class GeneralDAO {
     }
 
     public ArrayList<Employees> listEmployee(int empno) {
-        return (ArrayList<Employees>) sessao.createQuery("from Employees where emp_no = " + empno).list();
+        return (ArrayList<Employees>) sessao.createQuery("from Employees AS emp join Salaries AS sal ON emp.emp_no = sal.emp_no WHERE emp.emp_no = " + empno).list();
     }
 }
