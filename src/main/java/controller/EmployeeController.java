@@ -224,6 +224,19 @@ public class EmployeeController {
         grl_emp.fecharSessao();
         return null;
     }
+    
+    public ArrayList<Salaries> readSalaries(int empNo) {
+        GeneralDAO grl_emp = new GeneralDAO();
+        try {
+            //consultar
+            Session sessao = grl_emp.getSessao();
+            return grl_emp.listSalariesFromEmployee(empNo);
+        } catch (HibernateException e) {     
+            e.printStackTrace();
+        }
+        grl_emp.fecharSessao();
+        return null;
+    }
 
     public ArrayList<Employees> listAllEmployees() {
         GeneralDAO grl_emp = new GeneralDAO();

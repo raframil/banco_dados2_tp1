@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import model.Departments;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -521,6 +522,7 @@ public class StoreEmployeeView extends javax.swing.JInternalFrame {
 
         try {
             control.createEmployee(Integer.parseInt(empNoField.getText()), inputsDigitados);
+            JOptionPane.showMessageDialog(null, "Employee Created!");
         } catch (Exception ex) {
             Logger.getLogger(StoreEmployeeView.class.getName()).log(Level.SEVERE, null, ex);
         }

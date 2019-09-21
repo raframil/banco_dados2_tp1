@@ -5,6 +5,7 @@ import org.hibernate.*;
 import controller.HibernateUtil;
 import java.util.ArrayList;
 import model.Employees;
+import model.Salaries;
 
 /**
  *
@@ -50,6 +51,10 @@ public class GeneralDAO {
 
     public ArrayList<?> listAll(String table) {
         return (ArrayList<?>) sessao.createQuery("from " + table).list();
+    }
+    
+    public ArrayList<Salaries> listSalariesFromEmployee(int empno) {
+        return (ArrayList<Salaries>) sessao.createQuery("from Salaries where emp_no = " + empno).list();
     }
 
     public ArrayList<Employees> listEmployee(int empno) {
