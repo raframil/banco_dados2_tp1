@@ -96,17 +96,14 @@ public class EditSalariesView extends javax.swing.JInternalFrame {
 
         jLabel5.setText("To Date");
 
-        try {
-            fromDateUpdateField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
-        } catch (java.text.ParseException ex) {
-            ex.printStackTrace();
-        }
+        fromDateUpdateField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("yyyy-MM-dd"))));
+        fromDateUpdateField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                fromDateUpdateFieldActionPerformed(evt);
+            }
+        });
 
-        try {
-            toDateUpdateField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
-        } catch (java.text.ParseException ex) {
-            ex.printStackTrace();
-        }
+        toDateUpdateField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("yyyy-MM-dd"))));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -206,8 +203,8 @@ public class EditSalariesView extends javax.swing.JInternalFrame {
                 try {
                     int emp_no = Integer.parseInt(searchByIdField1.getText());
                     int salary = Integer.parseInt(salaryUpdateField.getText());
-                    Date fromDate = new SimpleDateFormat("dd/MM/yyyy").parse(fromDateUpdateField.getText());
-                    Date toDate = new SimpleDateFormat("dd/MM/yyyy").parse(toDateUpdateField.getText());
+                    Date fromDate = new SimpleDateFormat("yyyy-MM-dd").parse(fromDateUpdateField.getText());
+                    Date toDate = new SimpleDateFormat("yyyy-MM-dd").parse(toDateUpdateField.getText());
                     emplCtrl.updateSalary(emp_no, salary, fromDate, toDate);
                     JOptionPane.showMessageDialog(null, "Salary updated!");
 
@@ -226,6 +223,10 @@ public class EditSalariesView extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(null, "Type any employee number!");
         }
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void fromDateUpdateFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fromDateUpdateFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_fromDateUpdateFieldActionPerformed
 
     public void addRowToJTable(ArrayList<Salaries> salaries) throws Exception {
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
