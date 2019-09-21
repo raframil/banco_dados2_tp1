@@ -154,24 +154,11 @@ public class EmployeeController {
     }
 
     public void updateEmployee(int empNo, ArrayList<ArrayList<String>> inputsDigitados) throws ParseException {
-
         GeneralDAO grl_emp = new GeneralDAO();
-
         try {
-
-            //atualizar
             Employees employee = new Employees();
-            Titles titl = new Titles();
-            TitlesId titl_id = new TitlesId();
-            Salaries sal = new Salaries();
-            SalariesId sal_id = new SalariesId();
-            DeptEmp deptEmp = new DeptEmp();
-            Departments dept = new Departments();
-            DeptEmpId deptEmp_id = new DeptEmpId();
-            DeptManager deptMan = new DeptManager();
-            DeptManagerId deptMan_id = new DeptManagerId();
 
-            Session sessao = grl_emp.getSessao();
+            Session session = grl_emp.getSessao();
 
             grl_emp.carregar(employee, empNo);
 
@@ -182,6 +169,7 @@ public class EmployeeController {
                     String nomeInput = inputsDigitados.get(i).get(j).toString();
                     String valorInput = inputsDigitados.get(i).get(j + 1).toString();
 
+                    // Dados Referentes a tabela de Employees
                     if (nomeInput.equals("birth_date")) {
                         Date date1 = new SimpleDateFormat("dd/MM/yyyy").parse(valorInput);
                         employee.setBirthDate(date1);
@@ -194,18 +182,52 @@ public class EmployeeController {
                     if (nomeInput.equals("last_name")) {
                         employee.setLastName(valorInput);
                     }
+
+                    if (nomeInput.equals("sex")) {
+                        employee.setGender(valorInput);
+                    }
+
+                    if (nomeInput.equals("hire_date")) {
+                        Date date = new SimpleDateFormat("dd/MM/yyyy").parse(valorInput);
+                        employee.setHireDate(date);
+                    }
+                    // Fim Dados Referentes a tabela de Employees
                 }
-                //System.out.println(); 
             }
-
-            employee.setDeptEmps(null);
-            employee.setDeptManagers(null);
             employee.setEmpNo(empNo);
-            employee.setGender(null);
-            employee.setHireDate(null);
-            employee.setSalarieses(null);
-            employee.setTitleses(null);
+            session.update(employee);
 
+            Transaction tr = session.beginTransaction();
+            tr.commit();
+        } catch (HibernateException e) {
+            e.printStackTrace();
+        }
+        grl_emp.fecharSessao();
+    }
+
+    public void updateSalary(int empNo, int salary, Date fromDate, Date toDate) {
+        GeneralDAO grl_emp = new GeneralDAO();
+        try {
+            Session session = grl_emp.getSessao();
+
+            SalariesId sal_id = new SalariesId();
+            Salaries sal = new Salaries();
+
+            sal_id.setEmpNo(empNo);
+            sal_id.setFromDate(fromDate);
+
+            sal.setSalary(salary);
+            sal.setToDate(toDate);
+            sal.setId(sal_id);
+
+            Transaction tx = session.beginTransaction();
+
+            String hqlUpdate = "update Salaries set sal.salary = :salary where sal.emp_no = :empNo";
+            int updatedEntities = session.createQuery(hqlUpdate)
+                    .setInteger("salary", salary)
+                    .setInteger("empNo", empNo)
+                    .executeUpdate();
+            tx.commit();
         } catch (HibernateException e) {
             e.printStackTrace();
         }
@@ -218,20 +240,20 @@ public class EmployeeController {
             //consultar
             Session sessao = grl_emp.getSessao();
             return grl_emp.listEmployee(empNo);
-        } catch (HibernateException e) {     
+        } catch (HibernateException e) {
             e.printStackTrace();
         }
         grl_emp.fecharSessao();
         return null;
     }
-    
+
     public ArrayList<Salaries> readSalaries(int empNo) {
         GeneralDAO grl_emp = new GeneralDAO();
         try {
             //consultar
             Session sessao = grl_emp.getSessao();
             return grl_emp.listSalariesFromEmployee(empNo);
-        } catch (HibernateException e) {     
+        } catch (HibernateException e) {
             e.printStackTrace();
         }
         grl_emp.fecharSessao();

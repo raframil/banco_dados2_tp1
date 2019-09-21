@@ -277,9 +277,38 @@ public class EditEmployeeView extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void searchEmployee(int emp_no) {
+        ArrayList<Employees> employee = new ArrayList();
+        employee = emplCtrl.readEmployee(emp_no);
+
+        // verificar se existe a posicao 0 no arraylist
+        // se nao existir, exibir mensagem de que o empregadoo procurado não existe
+        if (employee.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Employee " + emp_no + " not found!");
+        } else {
+            firstNameField.setText(employee.get(0).getFirstName());
+            lastNameField.setText(employee.get(0).getLastName());
+
+            SimpleDateFormat dataString = new SimpleDateFormat("dd/MM/yyyy");
+            String formatedBirth = dataString.format(employee.get(0).getBirthDate());
+            birthField.setText(formatedBirth);
+
+            String formatedHireDate = dataString.format(employee.get(0).getHireDate());
+            hireField.setText(formatedHireDate);
+
+            String gender = employee.get(0).getGender();
+            if (gender.equals("M")) {
+                maleRadio.setSelected(true);
+            } else {
+                femaleRadio.setSelected(true);
+            }
+        }
+    }
+
     private void submitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitButtonActionPerformed
         ArrayList<ArrayList<String>> inputsDigitados = new ArrayList<>();
         EmployeeController control = new EmployeeController();
+        int emp_no = 0;
 
         if (!birthField.getText().isEmpty()) {
             ArrayList<String> array = new ArrayList<>();
@@ -306,6 +335,7 @@ public class EditEmployeeView extends javax.swing.JInternalFrame {
             ArrayList<String> array = new ArrayList<>();
             array.add("emp_no");
             array.add(searchByIdField.getText());
+            emp_no = Integer.parseInt(searchByIdField.getText());
             inputsDigitados.add(array);
         }
 
@@ -330,6 +360,8 @@ public class EditEmployeeView extends javax.swing.JInternalFrame {
 
         try {
             control.updateEmployee(Integer.parseInt(searchByIdField.getText()), inputsDigitados);
+            JOptionPane.showMessageDialog(null, "Employee " + emp_no + " Updated!");
+            //searchEmployee(emp_no);
         } catch (ParseException ex) {
             Logger.getLogger(EditEmployeeView.class.getName()).log(Level.SEVERE, null, ex);
         }
