@@ -3,6 +3,8 @@ package controller;
 import java.util.Date;
 import model.Employees;
 import java.util.Iterator;
+import controller.GeneralDAO;
+import org.hibernate.Session;
 
 /**
  *
@@ -23,8 +25,19 @@ public class DAOExtends extends GeneralDAO{
     public Employees funcionariosDataDeContrato(Date dataContrato){
         
         //retorna todos os funcionários que foram contratados até uma data especificada
+        GeneralDAO grl_dao = new GeneralDAO();
         
-        Iterator i = sessao.createQuery("from Employees e JOIN DeptEmp d JOIN Salaries s JOIN Titles t WHERE hireDate < '"+dataContrato+"'").list().iterator();
+        Session sessao = grl_dao.getSessao();
+        
+        Iterator i = sessao.createQuery(
+            "select ph " +
+            "from Employees e " +
+            "join e.DeptEmp d " +
+            "join d.Salaries s " +
+            "join s.Titles t " +
+            "where e.hireDate < :dataContrato ")
+        .setParameter( "dataContrato", dataContrato).list().iterator();
+                
         Employees e = null;
         
         if(i.hasNext()){
@@ -37,9 +50,20 @@ public class DAOExtends extends GeneralDAO{
     public Employees funcionariosMediaSalarialDept(String numero_dept){
         
         //retorna todos os funcionários que foram contratados até uma data especificada
+        GeneralDAO grl_dao = new GeneralDAO();
+        Session sessao = grl_dao.getSessao();
+//        Iterator i = sessao.createQuery("from Employees e join DeptEmp d join d.Salaries s where d.deptNo = :numero_dept "
+//                + "and s.salary < (SELECT AVG(s.salary) from Salaries s where d.deptNo = :numero_dept")
+                
+        Iterator i = sessao.createQuery(
+            "select ph " +
+            "from Employees e " +
+            "join e.DeptEmp d " +
+            "join d.Salaries s " +
+            "where d.deptNo = :numero_dept and s.salary < (SELECT AVG(s.salary) from Salaries s where d.deptNo = :numero_dept)")
+        .setParameter( "numero_dept", numero_dept)
+        .setParameter( "numero_dept", numero_dept).list().iterator();
         
-        Iterator i = sessao.createQuery("from Employees e JOIN DeptEmp d JOIN Salaries s WHERE d.deptNo = '"+numero_dept+"' "
-                + "AND s.salary < (SELECT AVG(s.salary) FROM (Employees e JOIN DeptEmp d) JOIN Salaries s WHERE d.deptNo = '"+numero_dept+"' ").list().iterator();
         Employees e = null;
         
         if(i.hasNext()){

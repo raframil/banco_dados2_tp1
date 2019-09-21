@@ -195,8 +195,9 @@ public class EmployeeController {
                 }
             }
             employee.setEmpNo(empNo);
-            session.update(employee);
-
+            //session.update(employee);
+            grl_emp.atualizar(employee);
+            
             Transaction tr = session.beginTransaction();
             tr.commit();
         } catch (HibernateException e) {
@@ -212,21 +213,26 @@ public class EmployeeController {
 
             SalariesId sal_id = new SalariesId();
             Salaries sal = new Salaries();
-
+            
+            //grl_emp.carregar(sal, sal_id);
             sal_id.setEmpNo(empNo);
             sal_id.setFromDate(fromDate);
 
             sal.setSalary(salary);
             sal.setToDate(toDate);
             sal.setId(sal_id);
-
-            Transaction tx = session.beginTransaction();
-
-            String hqlUpdate = "update Salaries set sal.salary = :salary where sal.emp_no = :empNo";
+            
+            //grl_emp.atualizar(sal);
+            
+            String hqlUpdate = "update Salaries set salary = :salary where emp_no = :empNo and from_date = :fromDate";
             int updatedEntities = session.createQuery(hqlUpdate)
                     .setInteger("salary", salary)
                     .setInteger("empNo", empNo)
+                    .setParameter("fromDate", fromDate)
                     .executeUpdate();
+            
+            Transaction tx = session.beginTransaction();           
+            
             tx.commit();
         } catch (HibernateException e) {
             e.printStackTrace();

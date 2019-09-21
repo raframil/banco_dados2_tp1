@@ -2,6 +2,7 @@ package model;
 // Generated Sep 11, 2019 5:56:11 PM by Hibernate Tools 4.3.1
 
 import java.util.Date;
+import javax.persistence.CascadeType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import org.hibernate.annotations.Cascade;
