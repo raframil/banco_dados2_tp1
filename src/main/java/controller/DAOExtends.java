@@ -4,6 +4,9 @@ import java.util.Date;
 import model.Employees;
 import java.util.Iterator;
 import controller.GeneralDAO;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 import org.hibernate.Session;
 
 /**
@@ -13,63 +16,45 @@ import org.hibernate.Session;
 
 public class DAOExtends extends GeneralDAO{
     
-//    public Livro getLivroByIsbn(String isbn) {
-//        Iterator i = sessao.createQuery("from Livro where isbn='"+isbn+"'").list().iterator();
-//        Livro l = null;
-//        if(i.hasNext()){
-//            l = (Livro) i.next();
-//        }
-//        return l;
-//    }
-    
-    public Employees funcionariosDataDeContrato(Date dataContrato){
-        
+    public List<Employees> funcionariosDataDeContrato(Date dataContrato){
+               
         //retorna todos os funcionários que foram contratados até uma data especificada
         GeneralDAO grl_dao = new GeneralDAO();
-        
+        List<Employees> emp = new ArrayList();
         Session sessao = grl_dao.getSessao();
-        
-        Iterator i = sessao.createQuery(
-            "select ph " +
+                        
+        emp = sessao.createQuery(
+            "select e " +
             "from Employees e " +
-            "join e.DeptEmp d " +
-            "join d.Salaries s " +
-            "join s.Titles t " +
             "where e.hireDate < :dataContrato ")
-        .setParameter( "dataContrato", dataContrato).list().iterator();
-                
-        Employees e = null;
+        .setParameter( "dataContrato", dataContrato).list();
         
-        if(i.hasNext()){
-            e = (Employees) i.next();
-        }
+//        for (Employees emp1 : emp) {
+//            System.out.println(emp1.getEmpNo());
+//        }
         
-        return e;
+        return emp;
     }
     
-    public Employees funcionariosMediaSalarialDept(String numero_dept){
+    public List<Employees> funcionariosMediaSalarialDept(String numero_dept){
         
         //retorna todos os funcionários que foram contratados até uma data especificada
         GeneralDAO grl_dao = new GeneralDAO();
+        List<Employees> emp = new ArrayList();
         Session sessao = grl_dao.getSessao();
-//        Iterator i = sessao.createQuery("from Employees e join DeptEmp d join d.Salaries s where d.deptNo = :numero_dept "
-//                + "and s.salary < (SELECT AVG(s.salary) from Salaries s where d.deptNo = :numero_dept")
                 
-        Iterator i = sessao.createQuery(
-            "select ph " +
-            "from Employees e " +
-            "join e.DeptEmp d " +
-            "join d.Salaries s " +
-            "where d.deptNo = :numero_dept and s.salary < (SELECT AVG(s.salary) from Salaries s where d.deptNo = :numero_dept)")
-        .setParameter( "numero_dept", numero_dept)
-        .setParameter( "numero_dept", numero_dept).list().iterator();
+        emp = sessao.createQuery(
+            "select e " +
+            "from Employees e , DeptEmp d , Salaries s " +
+            "where e.empNo = d.id.empNo and e.empNo = s.id.empNo and d.id.deptNo = :numero_dept and s.salary < " +
+            "(select avg(s.salary) from Salaries s)")
+            .setParameter("numero_dept", numero_dept).list();
         
-        Employees e = null;
+//        for (Employees emp1 : emp) {
+//            System.out.println(emp1.getEmpNo());
+//            System.out.println(emp1.getFirstName());
+//        }
         
-        if(i.hasNext()){
-            e = (Employees) i.next();
-        }
-        
-        return e;
+        return emp;
     }
 }

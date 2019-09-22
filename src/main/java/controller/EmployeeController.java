@@ -208,6 +208,8 @@ public class EmployeeController {
 
     public void updateSalary(int empNo, int salary, Date fromDate, Date toDate) {
         GeneralDAO grl_emp = new GeneralDAO();
+        DAOExtends dao_ext = new DAOExtends();
+        
         try {
             Session session = grl_emp.getSessao();
 
@@ -223,8 +225,9 @@ public class EmployeeController {
             sal.setId(sal_id);
             
             //grl_emp.atualizar(sal);
+            //dao_ext.funcionariosMediaSalarialDept("d007");
             
-            String hqlUpdate = "update Salaries set salary = :salary where emp_no = :empNo and from_date = :fromDate";
+            String hqlUpdate = "update Salaries s set s.salary = :salary where s.id.empNo = :empNo and s.id.fromDate = :fromDate";
             int updatedEntities = session.createQuery(hqlUpdate)
                     .setInteger("salary", salary)
                     .setInteger("empNo", empNo)
