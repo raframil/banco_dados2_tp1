@@ -5,6 +5,22 @@
  */
 package view;
 
+import controller.DepartmentController;
+import controller.EmployeeController;
+import java.sql.Date;
+import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import model.Department;
+import model.Employee;
+import model.Dept_emp;
+import model.Salaries;
+import model.Titles;
+
 /**
  *
  * @author Rafael
@@ -16,6 +32,15 @@ public class StoreEmployeeView extends javax.swing.JInternalFrame {
      */
     public StoreEmployeeView() {
         initComponents();
+        this.departmentController = new DepartmentController();
+        this.employeeController = new EmployeeController();
+        try {
+            this.buscaDepartamentos();
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(StoreEmployeeView.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(StoreEmployeeView.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -351,7 +376,86 @@ public class StoreEmployeeView extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void submitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitButtonActionPerformed
-        // TODO add your handling code here:
+        //Criando employee
+        Employee emp = new Employee();
+        Dept_emp dpemp = new Dept_emp();
+        Salaries salarie = new Salaries();
+        Titles titles = new Titles();
+        Department dep = new Department();
+
+        emp.setFirst_name(this.firstNameField.getText());
+        emp.setLast_name(this.lastNameField.getText());
+        try {
+            emp.setHire_date(new java.sql.Date( new SimpleDateFormat("dd/MM/yyyy").parse(this.hireField.getText()).getTime()));
+            emp.setBirth_date(new java.sql.Date( new SimpleDateFormat("dd/MM/yyyy").parse(this.birthField.getText()).getTime()));
+        } catch (ParseException ex) {
+        }
+
+        if (this.maleRadio.isSelected()) {
+            emp.setGender('M');
+        } else {
+            emp.setGender('F');
+        }
+        int emp_no = 0;
+        try {
+            emp_no = employeeController.getLastEmp();
+            emp_no += 1;
+        } catch (ClassNotFoundException ex) {
+            System.out.println("ERRO AO BUSCAR ULTIMO EMPLOYEE");
+        } catch (SQLException ex) {
+            Logger.getLogger(StoreEmployeeView.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        emp.setEmp_no(emp_no);
+        
+        
+        //criando titles
+        titles.setEmp_no(emp_no);
+        titles.setTitle(this.titleNameField.getText());
+        try {
+            titles.setFrom_date(new java.sql.Date(new SimpleDateFormat("dd/MM/yyyy").parse(this.titleSalaryFromDateField.getText()).getTime()));
+            titles.setTo_date(new java.sql.Date(new SimpleDateFormat("dd/MM/yyyy").parse(this.titleSalaryToDateField.getText()).getTime()));
+        } catch (ParseException ex) {
+            Logger.getLogger(StoreEmployeeView.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        //criando Salaries:
+        salarie.setEmp_no(emp_no);
+        salarie.setSalary(Integer.parseInt(this.salaryField.getText()));
+        try {
+            salarie.setTo_date(new java.sql.Date(new SimpleDateFormat("dd/MM/yyyy").parse(this.titleSalaryToDateField.getText()).getTime()));
+            salarie.setFrom_date(new java.sql.Date(new SimpleDateFormat("dd/MM/yyyy").parse(this.titleSalaryFromDateField.getText()).getTime()));
+        } catch (ParseException ex) {
+        }
+        
+        //criando Departamento
+        ArrayList<Department> lista = null;
+        try {
+            lista = departmentController.listAllDepartments();
+        } catch (ClassNotFoundException ex) {
+        } catch (SQLException ex) {
+            Logger.getLogger(StoreEmployeeView.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        dep.setDept_name(this.jComboBoxDepartment.getSelectedItem().toString());
+        for(Department d : lista){
+            if(this.jComboBoxDepartment.getSelectedItem().toString().equals(d.getDept_name())){
+                dep.setDept_no(d.getDept_no());
+            }
+        }
+        //Criando dept_emp
+        dpemp.setDept_no(dep.getDept_no());
+        dpemp.setEmp_no(emp.getEmp_no());
+        try {
+            dpemp.setTo_date(new java.sql.Date(new SimpleDateFormat("dd/MM/yyyy").parse(this.departmentToDateField.getText()).getTime()));
+            dpemp.setFrom_date(new java.sql.Date(new SimpleDateFormat("dd/MM/yyyy").parse(this.departmentFromDateField.getText()).getTime()));
+        } catch (ParseException ex) {
+            Logger.getLogger(StoreEmployeeView.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            employeeController.insereEmployee(emp,dpemp,salarie,titles,dep);
+        } catch (ClassNotFoundException ex) {
+        } catch (SQLException ex) {
+            Logger.getLogger(StoreEmployeeView.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_submitButtonActionPerformed
 
     private void maleRadioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_maleRadioActionPerformed
@@ -398,4 +502,14 @@ public class StoreEmployeeView extends javax.swing.JInternalFrame {
     private javax.swing.JFormattedTextField titleSalaryFromDateField;
     private javax.swing.JFormattedTextField titleSalaryToDateField;
     // End of variables declaration//GEN-END:variables
+    private DepartmentController departmentController;
+    private EmployeeController employeeController;
+
+    private void buscaDepartamentos() throws ClassNotFoundException, SQLException {
+        jComboBoxDepartment.removeAllItems();
+        ArrayList<Department> lista = this.departmentController.listAllDepartments();
+        for (Department dep : lista) {
+            jComboBoxDepartment.addItem(dep.getDept_name());
+        }
+    }
 }

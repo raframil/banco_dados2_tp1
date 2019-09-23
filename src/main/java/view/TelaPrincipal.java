@@ -5,6 +5,9 @@
  */
 package view;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author Rafael
@@ -143,7 +146,8 @@ public class TelaPrincipal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        StoreEmployeeView view = new StoreEmployeeView();
+        StoreEmployeeView view = null;
+            view = new StoreEmployeeView();
         jDesktopPane.add(view);
         view.setVisible(true);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
@@ -190,7 +194,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new TelaPrincipal().setVisible(true);
+                new TelaPrincipal().setVisible(true);            
             }
         });
     }

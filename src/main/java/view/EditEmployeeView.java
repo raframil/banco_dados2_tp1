@@ -5,17 +5,38 @@
  */
 package view;
 
+import controller.DepartmentController;
+import controller.EmployeeController;
+import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import model.Department;
+import model.Employee;
+
 /**
  *
  * @author Rafael
  */
 public class EditEmployeeView extends javax.swing.JInternalFrame {
 
+    EmployeeController empControl = new EmployeeController();
+
     /**
      * Creates new form EditEmployeeView
      */
     public EditEmployeeView() {
         initComponents();
+        this.departmentController = new DepartmentController();
+        this.employeeController = new EmployeeController();
+        try {
+            this.buscaDepartamentos();
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(StoreEmployeeView.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(StoreEmployeeView.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -297,9 +318,9 @@ public class EditEmployeeView extends javax.swing.JInternalFrame {
                     .addComponent(jLabel13)
                     .addComponent(jLabel12))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(titleSalaryFromDateField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(titleSalaryToDateField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(titleSalaryToDateField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(titleSalaryFromDateField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -380,7 +401,23 @@ public class EditEmployeeView extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+        try {
+            Employee emp = this.empControl.buscaEmp(this.jTextField1.getText());
+            this.firstNameField.setText(emp.getFirst_name());
+            this.lastNameField.setText(emp.getLast_name());
+            SimpleDateFormat dataString = new SimpleDateFormat("dd/MM/yyyy");
+            this.birthField.setText(dataString.format(emp.getBirth_date()));
+            this.hireField.setText(dataString.format(emp.getHire_date()));
+            if (emp.getGender() == 'M') {
+                this.maleRadio.setSelected(true);
+            } else {
+                this.femaleRadio.setSelected(true);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(EditEmployeeView.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(EditEmployeeView.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void submitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitButtonActionPerformed
@@ -433,4 +470,14 @@ public class EditEmployeeView extends javax.swing.JInternalFrame {
     private javax.swing.JFormattedTextField titleSalaryFromDateField;
     private javax.swing.JFormattedTextField titleSalaryToDateField;
     // End of variables declaration//GEN-END:variables
+    private DepartmentController departmentController;
+    private EmployeeController employeeController;
+    
+    private void buscaDepartamentos() throws ClassNotFoundException, SQLException {
+        jComboBoxDepartment.removeAllItems();
+        ArrayList<Department> lista = this.departmentController.listAllDepartments();
+        for (Department dep : lista) {
+            jComboBoxDepartment.addItem(dep.getDept_name());
+        }
+    }
 }
