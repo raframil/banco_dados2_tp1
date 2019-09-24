@@ -8,6 +8,7 @@ package view;
 import controller.DepartmentController;
 import controller.EmployeeController;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -421,7 +422,28 @@ public class EditEmployeeView extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void submitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitButtonActionPerformed
-        // TODO add your handling code here:
+        Employee emp = new Employee();
+        emp.setFirst_name(this.firstNameField.getText());
+        emp.setLast_name(this.lastNameField.getText());
+        try {
+            emp.setHire_date(new java.sql.Date( new SimpleDateFormat("dd/MM/yyyy").parse(this.hireField.getText()).getTime()));
+            emp.setBirth_date(new java.sql.Date( new SimpleDateFormat("dd/MM/yyyy").parse(this.birthField.getText()).getTime()));
+        } catch (ParseException ex) {
+        }
+
+        if (this.maleRadio.isSelected()) {
+            emp.setGender('M');
+        } else {
+            emp.setGender('F');
+        }
+        emp.setEmp_no(Integer.parseInt(this.jTextField1.getText()));
+        try {
+            empControl.updateEmp(emp);
+        } catch (SQLException ex) {
+            Logger.getLogger(EditEmployeeView.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(EditEmployeeView.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_submitButtonActionPerformed
 
     private void maleRadioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_maleRadioActionPerformed

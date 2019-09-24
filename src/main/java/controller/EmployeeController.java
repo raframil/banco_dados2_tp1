@@ -6,6 +6,7 @@
 package controller;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -37,7 +38,6 @@ public class EmployeeController {
         while (res.next()) {
             result = res.getInt(1);
         }
-
         return result;
     }
 
@@ -73,5 +73,43 @@ public class EmployeeController {
             emp.setHire_date(res.getDate(6));
         }
         return emp;
+    }
+    
+    public void updateEmp(Employee emp) throws SQLException, ClassNotFoundException{
+        String SQL = "update employees set birth_date='"+
+                emp.getBirth_date()+"',first_name='"+emp.getFirst_name()+"',last_name='"+emp.getLast_name()+
+                "',gender='"+emp.getGender()+"',hire_date='"+emp.getHire_date()+"' where emp_no ="+Integer.toString(emp.getEmp_no())+";";
+        conexao = varDao.getConexao();
+        varDao.executarUpdate(conexao, SQL);
+    }
+    
+    public ArrayList<Employee> listAllEmployees() throws ClassNotFoundException, SQLException{
+        String SQL = "select * from employees;";
+        ArrayList <Employee> employeessList = new ArrayList();
+            conexao = varDao.getConexao();
+            ResultSet res = this.varDao.executarQuery(conexao, SQL);
+            int emp_no;
+            Date birth_date;
+            String first_name;
+            String last_name;
+            char gender;
+            Date hire_date;
+            while (res.next()){
+                emp_no = res.getInt(1);
+                birth_date = res.getDate(2);
+                first_name = res.getString(3);
+                last_name = res.getString(4);
+                gender = res.getString(5).charAt(0);
+                hire_date = res.getDate(6);
+                employeessList.add(new Employee(emp_no, birth_date, first_name, last_name, gender, hire_date));
+            }
+        
+        return employeessList;
+    }
+    
+    public void deletaEmployee(int id) throws SQLException, ClassNotFoundException{
+        String SQL = "delete from employees where emp_no="+Integer.toString(id)+";";
+        conexao = varDao.getConexao();
+        varDao.executarDelete(conexao, SQL);
     }
 }

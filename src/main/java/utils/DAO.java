@@ -33,6 +33,16 @@ public class DAO {
         return pstm.executeQuery();
     }
     
+    public void executarUpdate(Connection conexao, String SQL) throws SQLException {
+        PreparedStatement pstm = conexao.prepareStatement(SQL);
+        pstm.executeUpdate();
+    }
+    
+    public void executarDelete(Connection conexao, String SQL) throws SQLException{
+        PreparedStatement pstm = conexao.prepareStatement(SQL);
+        pstm.execute(SQL);
+    }
+    
     public void executarBatch(Connection conexao, String[] SQLs) throws SQLException{
         Statement stm = conexao.createStatement();
         for (String s: SQLs){

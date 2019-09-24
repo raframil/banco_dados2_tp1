@@ -5,6 +5,15 @@
  */
 package view;
 
+import controller.EmployeeController;
+import model.Employee;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author Rafael
@@ -16,6 +25,28 @@ public class DeleteEmployeeView extends javax.swing.JInternalFrame {
      */
     public DeleteEmployeeView() {
         initComponents();
+        try {
+            this.addRowToJTable();
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(DeleteEmployeeView.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(DeleteEmployeeView.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void addRowToJTable() throws ClassNotFoundException, SQLException {
+        ArrayList<Employee> employeesList = null;
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        employeesList = empControl.listAllEmployees();
+        Object rowData[] = new Object[7];
+        for (int i = 0; i < employeesList.size(); i++) {
+            rowData[0] = employeesList.get(i).getEmp_no();
+            rowData[1] = employeesList.get(i).getFirst_name();
+            rowData[2] = employeesList.get(i).getLast_name();
+            rowData[3] = employeesList.get(i).getGender();
+            rowData[4] = employeesList.get(i).getHire_date();
+            model.addRow(rowData);
+        }
     }
 
     /**
@@ -38,10 +69,7 @@ public class DeleteEmployeeView extends javax.swing.JInternalFrame {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+
             },
             new String [] {
                 "ID", "First Name", "Last Name", "Gender", "Hire Date"
@@ -67,33 +95,37 @@ public class DeleteEmployeeView extends javax.swing.JInternalFrame {
 
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/user_delete.png"))); // NOI18N
         jButton1.setText("Delete");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 774, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1)
                     .addComponent(deleteIDField, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1))
+                    .addComponent(jButton1)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 774, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 531, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(31, 31, 31)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(deleteIDField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton1)
-                .addGap(0, 20, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         pack();
@@ -103,6 +135,41 @@ public class DeleteEmployeeView extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_deleteIDFieldActionPerformed
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        int deleteId = Integer.parseInt(deleteIDField.getText());
+
+        boolean flag = false;
+        for (int i = 0; i < model.getRowCount(); i++) {
+            if ((model.getValueAt(i, 0)).equals(deleteId)) {
+                flag = true;
+            }
+        }
+        if (flag == false) {
+            JOptionPane.showMessageDialog(null, "Employee " + deleteId + " does not exist! Type another id...");
+        } else {
+            int dialogButton = JOptionPane.YES_NO_OPTION;
+            int dialogResult = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete employee " + deleteId, "Confirm Delete", dialogButton);
+            if (dialogResult == 0) {
+                try {
+                    empControl.deletaEmployee(deleteId);
+                } catch (SQLException ex) {
+                    Logger.getLogger(DeleteEmployeeView.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (ClassNotFoundException ex) {
+                    Logger.getLogger(DeleteEmployeeView.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                JOptionPane.showMessageDialog(null, "Employee " + deleteId + " Removed!");
+                // remove o registro da tabela na view
+                for (int i = 0; i < model.getRowCount(); i++) {
+                    if ((model.getValueAt(i, 0)).equals(deleteId)) {
+                        model.removeRow(i);
+                    }
+                }
+            } else {
+                System.out.println("No Option");
+            }
+    }//GEN-LAST:event_jButton1ActionPerformed
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField deleteIDField;
@@ -111,4 +178,5 @@ public class DeleteEmployeeView extends javax.swing.JInternalFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
+    EmployeeController empControl = new EmployeeController();
 }
